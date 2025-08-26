@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head><meta charset="utf-8" /><title>
+	
+    Visa application
+
+</title>
+        <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+
+		<script type="text/javascript">
+
+			var stringLangDA = 'Yes';
+			var stringLangNU = 'No';
+
+		</script>
+
+        <link href="../Content/css@v=Iy5K9198gu03hWYET2_4k64xFOnQPAKCPMqyctXs_8Q1.css" rel="stylesheet"/>
+<link href="../Content/themes/redmond/css@v=yH7HpCd2C1e-2422buRvnwrMMvafpe74KS0uQ3ceMys1.css" rel="stylesheet"/>
+<script src="../bundles/modernizr@v=rGcoDow97GYrNMSwHq7xCCjlcB3UIY4_OhPRc6BBSQA1"></script>
+<script src="../bundles/jquery@v=sY3ZWNnWlxUmzUK01AfrXgupXqDrXcCCj-XSwwHOUuE1"></script>
+<script src="../bundles/jqueryui@v=S0IxTbo63up3LEax3C5Jg9SLj6Ec9EKucrg2VLzs1sM1"></script>
+<script src="../bundles/squant@v=j_9v_rg2nMbs2i2YLWjqdjZH3LCrpYL0hbCyR2SJsF81"></script>
+
+
+		<script type="text/javascript">
+			cultureInfoDateFormat = "dd/MM/yyyy";
+			cultureInfoDateFormatJs = cultureInfoDateFormat.replace("yyyy", "yy").replace(/M/g, "m");
+
+			CST_URL_IMAGES = '/Images';
+			imagesUrl = CST_URL_IMAGES;
+		</script>
+
+        
+<style type="text/css">
+            
+  .custom-combobox {
+    position: relative;
+    display:  inline-block;
+    width: 100%;
+  }
+  
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  
+  .custom-combobox-input {
+    margin: 0;
+    padding: 0.3em;
+    width:86%;
+  }
+  </style>
+</head>
+    <body>
+        <div id="header-wrapper">
+            <div id="header-emblem">
+                <a id="header-title" href="Inregistrare@c=en-US.html#">
+                <span>
+                    MINISTRY OF FOREIGN AFFAIRS AND EUROPEAN INTEGRATION OF THE REPUBLIC OF MOLDOVA
+                </span>
+            </a>
+            </div>
+
+            <div id="header-right">
+                <span><img src='../Images/eVisa.png' width="187" height="79" /></span>
+                <div class="languages">
+                    <a href="Inregistrare@c=ro-RO.html" class='langRO-passive'>&nbsp;</a>
+                    <a href="Inregistrare@c=en-US.html" class='langEN'>&nbsp;</a>
+                </div>
+            </div>
+
+			<ul id="horizontal-menu" class="sf-menu">
+<li class="menu-item-level1 col1 "><a href="../Home/Index.html" >Start</a>
+</li>
+<li class="menu-item-level1 col2 "><a href="http://www.mfa.gov.md/entry-visas-moldova/" target='_blank'>Do I need a visa?</a>
+</li>
+<li class="menu-item-level1 col3 "><a href="Inregistrare.html" >Apply now</a>
+</li>
+<li class="menu-item-level1 col4 "><a href="Continua.html" >Continue application</a>
+</li>
+<li class="menu-item-level1 col5 "><a href="Verifica.html" >Check your application status</a>
+</li>
+<li class="menu-item-level1 col6 "><a href="../check-my-visa/index.html" >Check visa</a>
+</li>
+</li>
+</ul>
+
+        </div>
+        
+        <div id="body-wrapper" class="inner">
+            <div id="sidebar">
+                
+                
+
+
+
+<div class="sidebar-item">
+    Things you should know
+    <a href='../Info/ThingsYouShouldKnow.html'>10 things you should know about the eVisa</a>
+</div>
+
+
+            </div>
+
+            <div id="content">
+
+                <div class="page-title-content">
+    Visa application
+</div>
+                
+                <div id="form_error_message" class="pageErrorMessage" style="display: none;"></div>
+				<div id="form_info_message" class="pageInfoMessage" style="display: none;"></div>
+				<div id="question" class="pageInfoMessage" style="display: none;">
+					<div id="question_titlu"></div>
+					<div id="question_message"></div>
+				</div>
+
+                <div id="info" class="pageInfoMessage" style="display: none;">
+					<div id="info_titlu"></div>
+					<div id="info_message"></div>
+				</div>
+
+                <div id="masterMainContent">
+                    
+
+<form id="formInregistrare" method='post' action='https://evisa.gov.md/VisaFile/DosarSaveStepGettingStarted'>
+    
+
+<fieldset class="app-panel">
+    <div class="app-left-panel">
+       Applicant data
+    </div>
+    <div class="app-content-panel">
+        <div class="content-left">
+            <div class="app-content-data">
+                <label for="Nume">Surname</label>
+                <input id="Nume" name="Nume" class="js-required" type="text" koValidate="required" />
+            </div>
+
+           <div class="app-content-data" style="margin-top:15px">
+                <label for="Prenume">First name</label>
+                <input id="Prenume" name="Prenume" class="js-required" type="text" koValidate="required" />
+            </div>
+
+            <div class="app-content-data" style="margin-top:15px">
+                <label for="IdCetatenie">Nationality</label>
+                <select id="IdCetatenie" name="IdCetatenie" class="input_select js-required" onchange="idCetatenieChange()" koValidate='comboBoxNotSpecified'><option value="" selected>Select</option><option value="1">AFGHANISTAN</option><option value="3">ALBANIA</option><option value="4">ALGERIA</option><option value="6">ANDORRA</option><option value="7">ANGOLA</option><option value="10">ANTIGUA AND BARBUDA</option><option value="11">ARGENTINA</option><option value="12">ARMENIA</option><option value="14">AUSTRALIA</option><option value="15">AUSTRIA</option><option value="16">AZERBAIJAN</option><option value="17">BAHAMAS</option><option value="18">BAHRAIN</option><option value="19">BANGLADESH</option><option value="20">BARBADOS</option><option value="21">BELARUS</option><option value="22">BELGIUM</option><option value="23">BELIZE</option><option value="24">BENIN</option><option value="26">BHUTAN</option><option value="27">BOLIVIA</option><option value="29">BOSNIA AND HERZEGOVINA</option><option value="30">BOTSWANA</option><option value="32">BRAZIL</option><option value="33">BRITISH INDIAN OCEAN TERRITORY</option><option value="34">BRUNEI DARUSSALAM</option><option value="35">BULGARIA</option><option value="36">BURKINA FASO</option><option value="37">BURUNDI</option><option value="38">CAMBODIA</option><option value="39">CAMEROON</option><option value="40">CANADA</option><option value="41">CAPE VERDE</option><option value="43">CENTRAL AFRICAN REPUBLIC</option><option value="44">CHAD</option><option value="45">CHILE</option><option value="46">CHINA</option><option value="49">COLOMBIA</option><option value="50">COMOROS</option><option value="51">CONGO</option><option value="52">CONGO, THE DEMOCRATIC REPUBLIC OF THE</option><option value="54">COSTA RICA</option><option value="55">COTE D'IVOIRE</option><option value="56">CROATIA</option><option value="57">CUBA</option><option value="59">CYPRUS</option><option value="60">CZECHIA</option><option value="61">DENMARK</option><option value="62">DJIBOUTI</option><option value="63">DOMINICA</option><option value="64">DOMINICAN REPUBLIC</option><option value="65">ECUADOR</option><option value="66">EGYPT</option><option value="67">EL SALVADOR</option><option value="68">EQUATORIAL GUINEA</option><option value="69">ERITREA</option><option value="70">ESTONIA</option><option value="71">ETHIOPIA</option><option value="74">FIJI</option><option value="75">FINLAND</option><option value="76">FRANCE</option><option value="77">FRENCH GUIANA</option><option value="78">FRENCH POLYNESIA</option><option value="79">FRENCH SOUTHERN TERRITORIES</option><option value="80">GABON</option><option value="81">GAMBIA</option><option value="82">GEORGIA</option><option value="83">GERMANY</option><option value="84">GHANA</option><option value="86">GREECE</option><option value="88">GRENADA</option><option value="91">GUATEMALA</option><option value="93">GUINEA</option><option value="94">GUINEA-BISSAU</option><option value="95">GUYANA</option><option value="96">HAITI</option><option value="98">HOLY SEE (VATICAN CITY STATE)</option><option value="99">HONDURAS</option><option value="100">HONG KONG</option><option value="101">HUNGARY</option><option value="102">ICELAND</option><option value="103">INDIA</option><option value="104">INDONESIA</option><option value="105">IRAN</option><option value="106">IRAQ</option><option value="107">IRELAND</option><option value="109">ISRAEL</option><option value="110">ITALY</option><option value="111">JAMAICA</option><option value="112">JAPAN</option><option value="114">JORDAN</option><option value="115">KAZAKHSTAN</option><option value="116">KENYA</option><option value="117">KIRIBATI</option><option value="118">KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF</option><option value="119">KOREA, REPUBLIC OF</option><option value="120">KUWAIT</option><option value="121">KYRGYZSTAN</option><option value="122">LAO PEOPLE'S DEMOCRATIC REPUBLIC</option><option value="123">LATVIA</option><option value="124">LEBANON</option><option value="125">LESOTHO</option><option value="126">LIBERIA</option><option value="127">LIBYA</option><option value="128">LIECHTENSTEIN</option><option value="129">LITHUANIA</option><option value="130">LUXEMBOURG</option><option value="131">MACAO</option><option value="132">MACEDONIA, REPUBLIC OF</option><option value="133">MADAGASCAR</option><option value="134">MALAWI</option><option value="135">MALAYSIA</option><option value="136">MALDIVES</option><option value="137">MALI</option><option value="138">MALTA</option><option value="139">MARSHALL ISLANDS</option><option value="141">MAURITANIA</option><option value="142">MAURITIUS</option><option value="144">MEXICO</option><option value="145">MICRONESIA, FEDERATED STATES OF</option><option value="146">MOLDOVA, REPUBLIC OF</option><option value="147">MONACO</option><option value="148">MONGOLIA</option><option value="149">MONTENEGRO</option><option value="151">MOROCCO</option><option value="152">MOZAMBIQUE</option><option value="153">MYANMAR</option><option value="154">NAMIBIA</option><option value="155">NAURU</option><option value="156">NEPAL</option><option value="157">NETHERLANDS</option><option value="159">NEW ZEALAND</option><option value="160">NICARAGUA</option><option value="161">NIGER</option><option value="162">NIGERIA</option><option value="163">KOSOVO</option><option value="166">NORWAY</option><option value="167">OMAN</option><option value="168">PAKISTAN</option><option value="169">PALAU</option><option value="170">PALESTINE</option><option value="171">PANAMA</option><option value="172">PAPUA NEW GUINEA</option><option value="173">PARAGUAY</option><option value="174">PERU</option><option value="175">PHILIPPINES</option><option value="177">POLAND</option><option value="178">PORTUGAL</option><option value="180">QATAR</option><option value="182">ROMANIA</option><option value="183">RUSSIAN FEDERATION</option><option value="184">RWANDA</option><option value="187">SAINT KITTS AND NEVIS</option><option value="188">SAINT LUCIA</option><option value="191">SAINT VINCENT AND THE GRENADINES</option><option value="192">SAMOA</option><option value="193">SAN MARINO</option><option value="194">SAO TOME AND PRINCIPE</option><option value="195">SAUDI ARABIA</option><option value="196">SENEGAL</option><option value="197">SERBIA</option><option value="198">SEYCHELLES</option><option value="199">SIERRA LEONE</option><option value="200">SINGAPORE</option><option value="202">SLOVAKIA</option><option value="203">SLOVENIA</option><option value="204">SOLOMON ISLANDS</option><option value="205">SOMALIA</option><option value="206">SOUTH AFRICA</option><option value="208">SOUTH SUDAN</option><option value="209">SPAIN</option><option value="210">SRI LANKA</option><option value="211">SUDAN</option><option value="212">SURINAME</option><option value="214">Eswatini</option><option value="215">SWEDEN</option><option value="216">SWITZERLAND</option><option value="217">SYRIA</option><option value="219">TAJIKISTAN</option><option value="220">TANZANIA, UNITED REPUBLIC OF</option><option value="221">THAILAND</option><option value="222">TIMOR-LESTE</option><option value="223">TOGO</option><option value="225">TONGA</option><option value="226">TRINIDAD AND TOBAGO</option><option value="227">TUNISIA</option><option value="228">TURKEY</option><option value="229">TURKMENISTAN</option><option value="231">TUVALU</option><option value="232">UGANDA</option><option value="233">UKRAINE</option><option value="234">UNITED ARAB EMIRATES</option><option value="235">UNITED KINGDOM</option><option value="236">USA</option><option value="238">URUGUAY</option><option value="239">UZBEKISTAN</option><option value="240">VANUATU</option><option value="241">VENEZUELA</option><option value="242">VIET NAM</option><option value="247">YEMEN</option><option value="248">ZAMBIA</option><option value="249">ZIMBABWE</option><option value="250">STATELESS PERSON</option><option value="251">REFUGEE</option></select>
+            </div>
+
+            <div class="app-content-data" style="margin-top:5px">
+                <label for="Email">Email</label>
+                <input id="Email" name="Email" class="js-required" type="text" koValidate="required" />
+            </div>
+
+            <div class="app-content-data" style="margin-top:15px">
+                <label for="ConfirmareEmail">Email confirmation</label>
+                <input id="ConfirmareEmail" class="js-required" type="text" koValidate="required" />
+            </div>
+
+			<div id="divConditiiSuplimentare" style="display: none">
+				<div class="app-content-data" style="margin-top:15px">
+					<label>Do you have an invitation from Bureau for Migration and Asylum of the Republic of Moldova?&nbsp<span style="color: red">**</span></label>
+					<div class="app-content-item-inner">
+						<div class="app-content-data">
+							<label for="radioFlagDetinetiInvitatieBMA1">
+							<input onclick="flagDetinetiInvitatieBMAClick()" type="radio" value="true" id="radioFlagDetinetiInvitatieBMA1" name="FlagDetinetiInvitatieBMA" /> Yes</label>
+							<label for="radioFlagDetinetiInvitatieBMA2">
+							<input onclick="flagDetinetiInvitatieBMAClick()" type="radio" value="false" id="radioFlagDetinetiInvitatieBMA2" name="FlagDetinetiInvitatieBMA" checked="checked" /> No</label>
+						</div>
+					</div>
+				</div>
+
+				<div id="divFlagDetinetiInvitatieBMA" style="display: none;">
+					<div class="app-content-data">
+						<label for="NumarInvitatie">Invitation number</label>
+						<input id="NumarInvitatie" name="NumarInvitatie" class="js-required" type="text" style="width:265px;" koValidate="required" onchange="numarInvitatieChange()" />
+						<img id="NumarInvitatieOk"/>
+					</div>
+					<div class="app-content-data">
+						<button onclick="btnVerificaInvitatieClick()" type="button">Check</button>
+					</div>
+				</div>
+
+				<div class="app-content-data">
+					<label>Are you applying for a transit visa?&nbsp<span style="color: red">**</span></label>
+					<div class="app-content-item-inner">
+						<div class="app-content-data">
+							<label for="radioFlagSolicitaVisaTransit1">
+							<input onclick="FlagSolicitaVisaTransitClick()" type="radio" value="true" id="radioFlagSolicitaVisaTransit1" name="FlagSolicitaVisaTransit" /> Yes</label>
+							<label for="radioFlagSolicitaVisaTransit2">
+							<input onclick="FlagSolicitaVisaTransitClick()" type="radio" value="false" id="radioFlagSolicitaVisaTransit2" name="FlagSolicitaVisaTransit" checked="checked" /> No</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="app-content-data">
+					<label>Do you have a valid visa or residence permit issued by an European Union member state, the United Kingdom and Northern Ireland, the United States of America, Canada or other states whose list is approved by the Government, or the states party to the Schengen Agreement?&nbsp<span style="color: red">**</span></label>
+					<div class="app-content-item-inner">
+						<div class="app-content-data">
+							<label for="radioFlagDetineVizaUe1">
+							<input onclick="flagDetineVizaUeClick()" type="radio" value="true" id="radioFlagDetineVizaUe1" name="FlagDetineVizaUe" /> Yes</label>
+							<label for="radioFlagDetineVizaUe2">
+							<input onclick="flagDetineVizaUeClick()" type="radio" value="false" id="radioFlagDetineVizaUe2" name="FlagDetineVizaUe" checked="checked" /> No</label>
+						</div>
+					</div>
+				</div>
+
+				<div id="divFlagDetineVizaUe" style="display: none;">
+					<div class="app-content-data">
+						<label for="NumarVizaUe">Visa number</label>
+						<input id="NumarVizaUe" name="NumarVizaUe" class="js-required" type="text" koValidate="required" />
+					</div>
+
+					<div class="app-content-data">
+						<label for="IdTaraVizaUe">State member of Schengen Area or European Union which issued visa</label>
+						<select id="IdTaraVizaUe" name="IdTaraVizaUe" class="input_select js-required" onchange="" koValidate='comboBoxNotSpecified'><option value="" selected>Select</option><option value="15">AUSTRIA</option><option value="22">BELGIUM</option><option value="35">BULGARIA</option><option value="40">CANADA</option><option value="56">CROATIA</option><option value="59">CYPRUS</option><option value="60">CZECHIA</option><option value="61">DENMARK</option><option value="70">ESTONIA</option><option value="75">FINLAND</option><option value="76">FRANCE</option><option value="83">GERMANY</option><option value="86">GREECE</option><option value="101">HUNGARY</option><option value="102">ICELAND</option><option value="107">IRELAND</option><option value="110">ITALY</option><option value="123">LATVIA</option><option value="128">LIECHTENSTEIN</option><option value="129">LITHUANIA</option><option value="130">LUXEMBOURG</option><option value="138">MALTA</option><option value="157">NETHERLANDS</option><option value="166">NORWAY</option><option value="177">POLAND</option><option value="178">PORTUGAL</option><option value="182">ROMANIA</option><option value="202">SLOVAKIA</option><option value="203">SLOVENIA</option><option value="209">SPAIN</option><option value="215">SWEDEN</option><option value="216">SWITZERLAND</option><option value="235">UNITED KINGDOM</option><option value="236">USA</option></select>
+					</div>
+
+					<div class="app-content-data">
+						<label for="DataEmitereVizaUe">Issue date</label>
+						<input id="DataEmitereVizaUe" name="DataEmitereVizaUe" class="js-required" type="text" koType="Data" koValidate="required" />
+					</div>
+
+					<div class="app-content-data">
+						<label for="DataValabilitateVizaUe">Valid up to</label>
+						<input id="DataValabilitateVizaUe" name="DataValabilitateVizaUe" class="js-required" type="text" koType="Data" koValidate="required" />
+					</div>
+				</div>
+
+				<div class="app-content-data">
+					<label>Are you invited by the government or central government authorities in the investment projects of interest for the national economy?&nbsp<span style="color: red">**</span></label>
+					<div class="app-content-item-inner">
+						<div class="app-content-data">
+							<label for="radioFlagInvitatDeGuvern1">
+							<input onclick="flagInvitatDeGuvernClick()" type="radio" value="true" id="radioFlagInvitatDeGuvern1" name="FlagInvitatDeGuvern" /> Yes</label>
+							<label for="radioFlagInvitatDeGuvern2">
+							<input onclick="flagInvitatDeGuvernClick()" type="radio" value="false" id="radioFlagInvitatDeGuvern2" name="FlagInvitatDeGuvern" checked="checked" /> No</label>
+						</div>
+					</div>
+				</div>
+
+				<div id="divFlagInvitatDeGuvern" style="display: none;">
+					<div class="app-content-data">
+						<label for="DetaliiInvitatieGuvern">Details</label>
+						<textarea id="DetaliiInvitatieGuvern" name="DetaliiInvitatieGuvern" class="js-required" koValidate="required" rows="5" style="width: 97%"></textarea>
+					</div>
+				</div>
+			</div>
+
+			
+            <div class="app-content-data" style="margin-top:5px">
+                
+<script type="text/javascript">
+$(function () {$('#5ce190019e164f7399adcbbfaf71178c').show();});
+function ______55e4dfcde36a4609a461b10809d0eb66________() { $('#5ce190019e164f7399adcbbfaf71178c').hide(); $.post("/DefaultCaptcha/Refresh", { t: $('#CaptchaDeText').val() }, function(){$('#5ce190019e164f7399adcbbfaf71178c').show();}); return false; }</script> 
+<br/>
+<img id="CaptchaImage" src="../DefaultCaptcha/Generate@t=69229055-c99f-452d-aaf6-93107d74e24e"/><input id="CaptchaDeText" name="CaptchaDeText" type="hidden" value="69229055-c99f-452d-aaf6-93107d74e24e" /> <br/><a href="Inregistrare@c=en-US.html#CaptchaImage" id="5ce190019e164f7399adcbbfaf71178c" onclick="______55e4dfcde36a4609a461b10809d0eb66________()" style="display:none;">Refresh</a><br/>Verification code<br/><input autocomplete="off" autocorrect="off" id="CaptchaInputText" name="CaptchaInputText" type="text" value="" /><br/>
+            </div>
+			
+
+			<div class="app-content-data" style="margin-top:5px">
+                <label><span style="color: red">*</span> Mandatory field</label>
+				<label><span style="color: red">**</span> You need to fulfil at least one condition.</label>
+            </div>
+        </div>
+        <div class="content-right">
+            <div class="app-content-info">
+                <div class="app-content-info-header">
+                    <label class="app-content-info-header-help">Help:</label>
+                    <label class="app-content-info-header-help-item">Surname</label>
+                </div>
+                <div class="app-content-info-content">
+                    Enter the surname (last name) as written in the travel document.
+                </div>
+            </div>
+
+             <div class="app-content-info" style="margin-top:7px;">
+                <div class="app-content-info-header">
+                    <label class="app-content-info-header-help">Help:</label>
+                    <label class="app-content-info-header-help-item">First name</label>
+                </div>
+                <div class="app-content-info-content">
+                    Fill in all first names as they are specified in the travel document.
+                </div>
+            </div>
+
+             <div class="app-content-info" style="margin-top:12px;">
+                <div class="app-content-info-header">
+                    <label class="app-content-info-header-help">Help:</label>
+                    <label class="app-content-info-header-help-item">Nationality</label>
+                </div>
+                <div class="app-content-info-content">
+                    Fill in citizenship as it is stated on the travel document.
+                </div>
+            </div>
+
+            <div class="app-content-info">
+                <div class="app-content-info-header">
+                    <label class="app-content-info-header-help">Help:</label>
+                    <label class="app-content-info-header-help-item">Email</label>
+                </div>
+                <div class="app-content-info-content">
+                    Your email address
+                </div>
+            </div>
+
+            <div class="app-content-info" style="margin-top:5px;">
+                <div class="app-content-info-header">
+                    <label class="app-content-info-header-help">Help:</label>
+                    <label class="app-content-info-header-help-item">Email confirmation</label>
+                </div>
+                <div class="app-content-info-content">
+                    Confirmation of your email address
+                </div>
+            </div>
+
+			<div id="divHelpConditiSuplimentare" class="app-content-info" style="display: none; margin-top: 30px;">
+                <div class="app-content-info-header">
+                    <label class="app-content-info-header-help">Help:</label>
+                    <label class="app-content-info-header-help-item">Additional data requested</label>
+                </div>
+                <div class="app-content-info-content">
+                    Nationals of your Country are required to have an invitation issued by the Bureau of Migration and Asylum of the Republic of Moldova – or, if you are eligible, please select one of the two exceptions for this requirement.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</fieldset>
+
+<script type="text/javascript">
+    var currentStep = '1';
+    var saveUrl = '/VisaFile/DosarSaveStepGettingStarted';
+	var urlIdentificareInvitatie = '/VisaFile/IdentificareInvitatie';
+	var urlImagineOK = '/Images/tick.png';
+	var urlImagineNotOK = '/Images/cross.png';
+	var urlGetDetaliiTara = '/VisaFile/GetTara';
+
+    var lungimeCodSuplimentarDeUnicitate = 0;
+    var okInvitatie = false;
+    var msgInvitatieNegasita = 'Invitation not found!';
+    var msgAvetiNevoieDeInvitatie = 'You need to fulfil at least one condition.';
+    var msgValidatiInvitatia = 'You have to validate the invitation!';
+
+    $("#NumarInvitatieOk").attr("src", urlImagineNotOK);
+
+    function valideazaContainer() {
+
+        utils.hideFormErrorMessage();
+
+        var email = $('#Email').val();
+        var confirmEmail = $('#ConfirmareEmail').val();
+
+        if (email != confirmEmail) {
+            utils.showFormErrorMessage('Emails do not match.');
+            return false;
+        }
+
+		var detineInvitatie = $('input[name="FlagDetinetiInvitatieBMA"]:checked').val();
+		var solicitaVisaTransit = $('input[name="FlagSolicitaVisaTransit"]:checked').val();
+        var detineViza = $('input[name="FlagDetineVizaUe"]:checked').val();
+        var invitatDeGuvern = $('input[name="FlagInvitatDeGuvern"]:checked').val();
+        var flagConditiiSuplimentare = $("#divConditiiSuplimentare").is(":visible");
+
+    	if (detineInvitatie == "true" && okInvitatie == false) {
+    		utils.showFormErrorMessage(msgValidatiInvitatia);
+			return false;
+		}
+
+		if ((((detineInvitatie == "true") || (detineViza == "true") || (invitatDeGuvern == "true") || (solicitaVisaTransit == "true")) == false) && flagConditiiSuplimentare == true ) {
+			utils.showFormErrorMessage(msgAvetiNevoieDeInvitatie);
+			return false;
+		}
+    }
+
+	function flagDetinetiInvitatieBMAClick() {
+		var _visible = $('input[name="FlagDetinetiInvitatieBMA"]:checked').val();
+		if (_visible == "true")
+			$('#divFlagDetinetiInvitatieBMA').show();
+		else
+			$('#divFlagDetinetiInvitatieBMA').hide();
+	}
+
+	function flagDetineVizaUeClick() {
+		var _visible = $('input[name="FlagDetineVizaUe"]:checked').val();
+		if (_visible == "true")
+			$('#divFlagDetineVizaUe').show();
+		else
+			$('#divFlagDetineVizaUe').hide();
+
+		utils.AssignDatePickers();
+	}
+
+	function flagInvitatDeGuvernClick() {
+		var _visible = $('input[name="FlagInvitatDeGuvern"]:checked').val();
+		if (_visible == "true")
+			$('#divFlagInvitatDeGuvern').show();
+		else
+			$('#divFlagInvitatDeGuvern').hide();
+	}
+
+	function numarInvitatieChange() {
+		okInvitatie = false;
+		$("#NumarInvitatieOk").attr("src", urlImagineNotOK);
+	}
+
+	function btnVerificaInvitatieClick() {
+		utils.hideFormErrorMessage();
+
+		var postData = {
+			NumarInvitatie: $("#NumarInvitatie").val()
+		};
+		
+		utils.UIBlockElement('#masterMainContent');
+
+		utils.postJsonData(urlIdentificareInvitatie, JSON.stringify(postData),
+			    function (data) {
+			    	utils.UIUnblockElement('#masterMainContent');
+
+			    	okInvitatie = false;
+
+			    	if (data.success == false) {
+			    		utils.showFormErrorMessage(data.msg);
+			    		$("#NumarInvitatieOk").attr("src", urlImagineNotOK);
+			    		okInvitatie = false;
+			    	}
+			    	else if (data.InvitatieBMA != null) {
+			    		$("#NumarInvitatieOk").attr("src", urlImagineOK);
+			    		okInvitatie = true;
+			    	}
+			    	else {
+			    		$("#NumarInvitatieOk").attr("src", urlImagineNotOK);
+			    		okInvitatie = false;
+			    		utils.showFormErrorMessage(msgInvitatieNegasita);
+			    	}
+			    },
+			    function (data) { utils.UIUnblockElement('#masterMainContent'); },
+			    function (data) { utils.UIUnblockElement('#masterMainContent'); }
+		    );
+	}
+
+	function idCetatenieChange() {
+		utils.hideFormErrorMessage();
+
+		var postData = {
+			idTara: $("#IdCetatenie").val()
+		};
+
+		utils.UIBlockElement('#masterMainContent');
+
+		utils.postJsonData(urlGetDetaliiTara, JSON.stringify(postData),
+			    function (data) {
+			    	utils.UIUnblockElement('#masterMainContent');
+
+			    	if (data.success == false) {
+			    		utils.showFormErrorMessage(data.msg);
+			    		$("#divConditiiSuplimentare").hide();
+			    		$("#divHelpConditiSuplimentare").hide();
+			    	}
+			    	else if (data.FlagNecesitaInvitatie == true) {
+			    		$("#divConditiiSuplimentare").show();
+			    		$("#divHelpConditiSuplimentare").show();
+			    	}
+			    	else {
+			    		$("#divConditiiSuplimentare").hide();
+			    		$("#divHelpConditiSuplimentare").hide();
+			    	}
+			    },
+			    function (data) { utils.UIUnblockElement('#masterMainContent'); },
+			    function (data) { utils.UIUnblockElement('#masterMainContent'); }
+		    );
+	}
+
+</script>
+    <button type="submit">Complete the file</button>
+</form>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="footer-wrapper">
+			<span style="color:LightGray">Version: 1.6.0.0</span>
+            <table id="contact-info">
+                <!--
+				<tr>
+                    <td style="width: 210px;"><strong>Adresa:</strong></td>
+                    <td><strong>Telefon:</strong></td>
+                    <td>(+373 22) 57-82-06, 57-82-05</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">MD-2012 Republica Moldova, Chişinău, str. 31 August 1989, 80</td>
+                    <td><strong>Fax:</strong></td>
+                    <td>(+373 22) 23-23-02</td>
+                </tr>
+				-->
+                <tr>
+					<td style="width: 210px;">&nbsp;</td>
+                    <td><strong>E-mail:</strong></td>
+                    <td><a href="mailto:evisa@mfa.md">evisa@mfa.md</a></td>
+                </tr>
+            </table>
+        </div>
+
+        
+
+    <script type="text/javascript">
+
+        var urlDosarInregistrat = '/VisaFile/DosarInregistrat';
+    	var validator = knockoutValidatorEx("#masterMainContent");
+
+    	var msgVerificatiCampurileObligatorii = 'Check the required fields.';
+
+        $('#formInregistrare').submit(function () {
+
+        	//validari required
+        	if (validator.validateContainer("#masterMainContent") != true) {
+        		utils.showFormErrorMessage(msgVerificatiCampurileObligatorii);
+        		return false;
+        	}
+
+            if (valideazaContainer() == false)
+                return false;
+
+            var postUrl = $(this).attr('action');
+
+            var token = $("input[name^=__RequestVerificationToken]").first();
+            postUrl = postUrl + ((postUrl.indexOf("?") === -1) ? "?" : "&") + token.serialize();
+
+            utils.UIBlockElement('#masterMainContent');
+
+            $.ajax({
+                data: $(this).serialize(),
+                type: $(this).attr('method'),
+                contentType: 'application/x-www-form-urlencoded',
+                url: postUrl,
+                success: function (data) {
+                    if (data.success == false) {
+                        utils.showFormErrorMessage(data.msg);
+                        $('#CaptchaImage').attr('src', data.Captcha.CaptchaImage);
+                        $('#CaptchaDeText').attr('value', data.Captcha.CaptchaDeText);
+                        $('#CaptchaInputText').attr('value', '');
+                    }
+                    else {
+                        document.location = urlDosarInregistrat;
+                    }
+
+                    utils.UIUnblockElement('#masterMainContent');
+                }
+            });
+
+            return false; // cancel original event to prevent form submitting
+        });
+
+        $(document).ready(function () {
+        	utils.AssignDatePickers();
+        	utils.AssignStelutaValidatori();
+        });
+        
+    </script>
+
+	
+  <script>
+  	(function ($) {
+  		$.widget("custom.combobox", {
+  			wrapperId: null,
+  			_create: function () {
+  				wrapperId = $(this.element).attr('id') + '_wrapper';
+  				this.wrapper = $("<span>")
+					.attr('id', wrapperId)
+					.addClass("custom-combobox")
+					.insertBefore(this.element);
+
+  				this.element.hide();
+  				this.element.css('z-index', '-1');
+  				this._createAutocomplete();
+  				this._createShowAllButton();
+
+  			},
+
+  			_createAutocomplete: function () {
+  				_this = this;
+  				var selected = this.element.children(":selected"),
+				value = selected.val() ? selected.text() : "";
+
+  				this.input = $("<input>")
+          .appendTo(this.wrapper)
+          .val(value)
+          .attr("title", "")
+          .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+          .autocomplete({
+          	delay: 0,
+          	minLength: 0,
+          	source: $.proxy(this, "_source"),
+          	appendTo: '#' + wrapperId
+          })
+          .tooltip({
+          	tooltipClass: "ui-state-highlight"
+          });
+
+  				this._on(this.input, {
+  					autocompleteselect: function (event, ui) {
+  						ui.item.option.selected = true;
+  						this._trigger("select", event, {
+  							item: ui.item.option
+  						});
+  					},
+
+  					autocompletechange: "_removeIfInvalid"
+  				});
+  			},
+
+  			_createShowAllButton: function () {
+  				var input = this.input,
+          wasOpen = false;
+
+  				$("<a>")
+          .attr("tabIndex", -1)
+  				//.attr("title", "Show All Items")
+          .tooltip()
+          .appendTo(this.wrapper)
+          .button({
+          	icons: {
+          		primary: "ui-icon-triangle-1-s"
+          	},
+          	text: false
+          })
+          .removeClass("ui-corner-all")
+          .addClass("custom-combobox-toggle ui-corner-right")
+          .mousedown(function () {
+          	wasOpen = input.autocomplete("widget").is(":visible");
+          })
+          .click(function () {
+          	input.focus();
+
+          	// Close if already visible
+          	if (wasOpen) {
+          		return;
+          	}
+
+          	// Pass empty string as value to search for, displaying all results
+          	input.autocomplete("search", "");
+          });
+  			},
+
+  			_source: function (request, response) {
+  				var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+  				response(this.element.children("option").map(function () {
+  					var text = $(this).text();
+  					if (this.value && (!request.term || matcher.test(text)))
+  						return {
+  							label: text,
+  							value: text,
+  							option: this
+  						};
+  				}));
+  			},
+
+  			_removeIfInvalid: function (event, ui) {
+
+  				// Selected an item, nothing to do
+  				if (ui.item) {
+  					return;
+  				}
+
+  				// Search for a match (case-insensitive)
+  				var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+  				this.element.children("option").each(function () {
+  					if ($(this).text().toLowerCase() === valueLowerCase) {
+  						this.selected = valid = true;
+  						return false;
+  					}
+  				});
+
+  				// Found a match, nothing to do
+  				if (valid) {
+  					return;
+  				}
+
+  				// Remove invalid value
+  				this.input
+          .val("")
+          .attr("title", value + " didn't match any item")
+          .tooltip("open");
+  				this.element.val("");
+  				this._delay(function () {
+  					this.input.tooltip("close").attr("title", "");
+  				}, 2500);
+  				this.input.data("ui-autocomplete").term = "";
+  			},
+
+  			_destroy: function () {
+  				this.wrapper.remove();
+  				this.element.show();
+  			}
+  		});
+  	})(jQuery);
+
+  	$(function () {
+  		//$("#IdCetatenie").combobox();
+  	});
+  </script>
+
+
+        <script src="../bundles/custom@v=Y1CQS9U0_RK1fhdLA-OquxALCRuImNS2TwGvOn6drDQ1"></script>
+
+
+        
+		<form id="__AjaxAntiForgeryForm" action="Inregistrare@c=en-US.html#" method="post"><input name="__RequestVerificationToken" type="hidden" value="tG8wsyhzQ24rs2_AURExBREt9So0Qd9azDjTK_m1yF4U9jgLegBE3pkgCzW6i1l3SfndAyA7ps2pP0THpKnZTtf-rZ_LDnVrb2qh0PEYHO95vZURskfFZ62W6iklvUQaX1qynOeqk6a5y2MyOzT_urzSqM37Km_VLChL2XKrUK81" /></form>
+    </body>
+</html>

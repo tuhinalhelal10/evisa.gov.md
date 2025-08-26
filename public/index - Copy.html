@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visa Status Checker - Online System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #1a237e;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .server-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-online {
+            background: #4caf50;
+        }
+        
+        .status-offline {
+            background: #f44336;
+        }
+        
+        .nav-container {
+            background: #283593;
+            padding: 0;
+        }
+        
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            position: relative;
+        }
+        
+        .nav-menu li:not(:last-child)::after {
+            content: "|";
+            color: rgba(255,255,255,0.3);
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            font-size: 15px;
+            transition: background 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            background: #3949ab;
+        }
+        
+        .page {
+            padding: 30px;
+            display: none;
+        }
+        
+        #main-page {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #1a237e;
+            outline: none;
+            box-shadow: 0 0 10px rgba(26, 35, 126, 0.2);
+        }
+        
+        button {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            background: #283593;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .primary-btn {
+            background: #1a237e;
+            margin: 0 auto;
+            display: block;
+            width: 250px;
+        }
+        
+        .secondary-btn {
+            background: #757575;
+        }
+        
+        .add-btn {
+            background: #2e7d32;
+        }
+        
+        .delete-btn {
+            background: #d32f2f;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .details-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #1a237e;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-label {
+            flex: 1;
+            font-weight: 600;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .detail-value {
+            flex: 2;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status-issued {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-pending {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .status-rejected {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .action-buttons button {
+            flex: 1;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .admin-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px dashed #ccc;
+            display: none; /* Initially hidden */
+        }
+        
+        .visa-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .visa-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .visa-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 40px;
+    border-radius: 12px;
+    background: #4caf50;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 1000;
+    animation: popIn 0.3s ease-out;
+    min-width: 300px;
+    max-width: 400px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.notification.error {
+    background: #f44336;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+        
+        
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #f5f5f5;
+            color: #666;
+            font-size: 16px;
+            border-top: 1px solid #eee;
+        }
+        
+        .login-form {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+        }
+        
+        .hidden-admin-trigger {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 30px;
+            height: 30px;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            header h1 {
+                font-size: 24px;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-menu li:not(:last-child)::after {
+                display: none;
+            }
+        }
+    </style>
+
+<!-- new -->
+
+</head>
+<body>
+    
+    <div class="container">
+        <header>
+            
+            <div class="logo">
+                <i class="fas fa-passport"></i>
+            </div>
+            <h1>MINISTRY OF FOREIGN AFFAIRS AND EUROPEAN INTEGRATION</h1>
+            <p>OF THE REPUBLIC OF MOLDOVA</p>
+            <div class="server-status">
+                <span class="status-indicator status-online" id="server-status-indicator"></span>
+                <span id="server-status-text">Checking connection...</span>
+            </div>
+            <!-- Hidden admin trigger area -->
+            <div class="hidden-admin-trigger" id="hidden-admin-trigger" title="Admin Access"></div>
+        </header>
+        
+        <nav class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showPage('main-page')">START</a></li>
+                <li><a href="#">DO I NEED A VISA?</a></li>
+                <li><a href="#">APPLY NOW</a></li>
+                <li><a href="#">CONTINUE APPLICATION</a></li>
+                <li><a href="#" onclick="showPage('main-page')">CHECK YOUR APPLICATION STATUS</a></li>
+                <li><a href="#" onclick="showPage('main-page')">CHECK VISA</a></li>
+            </ul>
+        </nav>
+        
+        <div id="main-page" class="page">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #1a237e;">
+                <i class="fas fa-search"></i> Check Visa Status
+            </h2>
+            
+            <div class="form-group">
+                <label for="visa-number"><i class="fas fa-passport"></i> Visa Number</label>
+                <input type="text" id="visa-number" placeholder="Enter your visa number">
+            </div>
+            
+            <button id="check-btn" class="primary-btn">
+                <i class="fas fa-check-circle"></i> Check Status
+            </button>
+            
+            <!-- Hidden admin section - only visible after secret key combination -->
+            <div class="admin-section" id="admin-section">
+                <h3 style="text-align: center; margin: 30px 0 20px; color: #1a237e;">
+                    <i class="fas fa-lock"></i> Admin Panel
+                </h3>
+                
+                <div class="action-buttons">
+                    <button class="add-btn" id="add-visa-btn">
+                        <i class="fas fa-plus-circle"></i> Add New Visa
+                    </button>
+                    <button class="secondary-btn" id="view-all-btn">
+                        <i class="fas fa-list"></i> View All Visas
+                    </button>
+                    <button class="delete-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Hidden login form - only visible after secret key combination -->
+            <div class="login-form" id="login-form">
+                <h3 style="text-align: center; margin-bottom: 20px; color: #1a237e;">
+                    <i class="fas fa-lock"></i> Admin Login
+                </h3>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Admin username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Admin password">
+                </div>
+                
+                <button id="login-btn" class="primary-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+        </div>
+        
+        <div id="result-page" class="page">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #1a237e;">
+                <i class="fas fa-file-alt"></i> Visa Information
+            </h2>
+            
+            <div class="details-card">
+                <div class="detail-row">
+                    <div class="detail-label">Visa Number</div>
+                    <div class="detail-value" id="result-visa-number">V1234567</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Surname</div>
+                    <div class="detail-value" id="result-surname">VISVANANTNAM</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">First Name</div>
+                    <div class="detail-value" id="result-firstname">THISHO KUMAR</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Date of Birth</div>
+                    <div class="detail-value" id="result-dob">23/08/1989</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Passport Number</div>
+                    <div class="detail-value" id="result-passport">N8229664</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Visa Validity</div>
+                    <div class="detail-value" id="result-validity">26/07/2021</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Visa Status</div>
+                    <div class="detail-value">
+                        <span class="status status-issued" id="result-status">Viza emisa</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary-btn" id="another-search-btn">
+                    <i class="fas fa-search"></i> Another Search
+                </button>
+                <!-- Add New Visa button is hidden from regular users -->
+                <button class="add-btn" id="add-new-btn" style="display: none;">
+                    <i class="fas fa-plus-circle"></i> Add New Visa
+                </button>
+            </div>
+        </div>
+        
+        <div id="add-visa-page" class="page">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #1a237e;">
+                <i class="fas fa-plus-circle"></i> Add New Visa
+            </h2>
+            
+            <div id="admin-notification" class="notification" style="display: none;"></div>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="new-visa-number">Visa Number</label>
+                    <input type="text" id="new-visa-number" placeholder="Visa number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-surname">Surname</label>
+                    <input type="text" id="new-surname" placeholder="Surname">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-firstname">First Name</label>
+                    <input type="text" id="new-firstname" placeholder="First name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-dob">Date of Birth</label>
+                    <input type="text" id="new-dob" placeholder="DD/MM/YYYY">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-passport">Passport Number</label>
+                    <input type="text" id="new-passport" placeholder="Passport number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-validity">Visa Validity</label>
+                    <input type="text" id="new-validity" placeholder="DD/MM/YYYY">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-status">Visa Status</label>
+                    <select id="new-status" style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                        <option value="Viza emisa">Viza emisa (Issued)</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary-btn" id="back-to-main-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Main
+                </button>
+                <button id="save-new-btn" class="primary-btn">
+                    <i class="fas fa-save"></i> Save Visa Data
+                </button>
+            </div>
+        </div>
+        
+        <div id="all-visas-page" class="page">
+            <h2 style="text-align: center; margin-bottom: 25px; color: #1a237e;">
+                <i class="fas fa-list"></i> All Visa Records
+            </h2>
+            
+            <div class="visa-list" id="visa-list">
+                <!-- Visa items will be added here dynamically -->
+            </div>
+            
+            <div class="action-buttons">
+                <button class="secondary-btn" id="back-from-list-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Main
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>MINISTRY OF FOREIGN AFFAIRS AND EUROPEAN INTEGRATION OF THE REPUBLIC OF MOLDOVA</p>
+            <p class="footer-contact">E-mail: evisa@mfa.md</p>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> <span id="notification-text"></span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // API base URL - change this to your server URL
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        // Global variables
+        let currentUser = null;
+        let authToken = null;
+        let adminMode = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const mainPage = document.getElementById('main-page');
+            const resultPage = document.getElementById('result-page');
+            const addVisaPage = document.getElementById('add-visa-page');
+            const allVisasPage = document.getElementById('all-visas-page');
+            const visaNumberInput = document.getElementById('visa-number');
+            const checkBtn = document.getElementById('check-btn');
+            const anotherSearchBtn = document.getElementById('another-search-btn');
+            const addNewBtn = document.getElementById('add-new-btn');
+            const addVisaBtn = document.getElementById('add-visa-btn');
+            const viewAllBtn = document.getElementById('view-all-btn');
+            const backToMainBtn = document.getElementById('back-to-main-btn');
+            const backFromListBtn = document.getElementById('back-from-list-btn');
+            const saveNewBtn = document.getElementById('save-new-btn');
+            const adminSection = document.getElementById('admin-section');
+            const loginForm = document.getElementById('login-form');
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            const adminNotification = document.getElementById('admin-notification');
+            const visaList = document.getElementById('visa-list');
+            const serverStatusIndicator = document.getElementById('server-status-indicator');
+            const serverStatusText = document.getElementById('server-status-text');
+            const hiddenAdminTrigger = document.getElementById('hidden-admin-trigger');
+            
+            // Result elements
+            const resultVisaNumber = document.getElementById('result-visa-number');
+            const resultSurname = document.getElementById('result-surname');
+            const resultFirstname = document.getElementById('result-firstname');
+            const resultDob = document.getElementById('result-dob');
+            const resultPassport = document.getElementById('result-passport');
+            const resultValidity = document.getElementById('result-validity');
+            const resultStatus = document.getElementById('result-status');
+            
+            // New data elements
+            const newVisaNumber = document.getElementById('new-visa-number');
+            const newSurname = document.getElementById('new-surname');
+            const newFirstname = document.getElementById('new-firstname');
+            const newDob = document.getElementById('new-dob');
+            const newPassport = document.getElementById('new-passport');
+            const newValidity = document.getElementById('new-validity');
+            const newStatus = document.getElementById('new-status');
+            
+            // Login elements
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            
+            // Check server connection on load
+            checkServerConnection();
+            
+            // Check server connection function
+            async function checkServerConnection() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/visas/V1234567`);
+                    if (response.ok) {
+                        serverStatusIndicator.className = 'status-indicator status-online';
+                        serverStatusText.textContent = 'Server Online';
+                    } else {
+                        throw new Error('Server responded with error');
+                    }
+                } catch (error) {
+                    serverStatusIndicator.className = 'status-indicator status-offline';
+                    serverStatusText.textContent = 'Server Offline - Using Local Data';
+                    showNotification('Server is offline. Using local data.', true);
+                }
+            }
+            
+            // Show notification function
+            function showNotification(message, isError = false) {
+                notificationText.textContent = message;
+                notification.className = isError ? 'notification error' : 'notification';
+                notification.style.display = 'flex';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Show admin notification function
+            function showAdminNotification(message, isError = false) {
+                adminNotification.textContent = message;
+                adminNotification.className = isError ? 'notification error' : 'notification';
+                adminNotification.style.display = 'block';
+                
+                setTimeout(() => {
+                    adminNotification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Show page function
+            function showPage(pageId) {
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(page => page.style.display = 'none');
+                document.getElementById(pageId).style.display = 'block';
+            }
+            
+            // Check visa function using API
+            async function checkVisa(visaNumber) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/visas/${visaNumber}`);
+                    
+                    if (response.ok) {
+                        const visaData = await response.json();
+                        return visaData;
+                    } else if (response.status === 404) {
+                        showNotification('Visa not found in the system', true);
+                        return null;
+                    } else {
+                        throw new Error('Server error');
+                    }
+                } catch (error) {
+                    console.error('Error checking visa:', error);
+                    // Fallback to local data if server is offline
+                    const localData = JSON.parse(localStorage.getItem('visaData') || '{}');
+                    return localData[visaNumber] || null;
+                }
+            }
+            
+            // Login function
+            async function login(username, password) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        authToken = data.token;
+                        currentUser = data.user;
+                        
+                        // Save to localStorage for persistence
+                        localStorage.setItem('authToken', authToken);
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        
+                        showNotification('Login successful!');
+                        return true;
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Login failed');
+                    }
+                } catch (error) {
+                    showNotification(error.message, true);
+                    return false;
+                }
+            }
+            
+            // Add new visa function
+            async function addVisa(visaData) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/visas`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify(visaData),
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        showNotification('Visa added successfully!');
+                        return data.visa;
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Failed to add visa');
+                    }
+                } catch (error) {
+                    showNotification(error.message, true);
+                    return null;
+                }
+            }
+            
+            // Get all visas function
+            async function getAllVisas() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/visas`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const visas = await response.json();
+                        return visas;
+                    } else {
+                        throw new Error('Failed to fetch visas');
+                    }
+                } catch (error) {
+                    showNotification(error.message, true);
+                    return [];
+                }
+            }
+            
+            // Render visa list function
+            function renderVisaList(visas) {
+                visaList.innerHTML = '';
+                
+                if (visas.length === 0) {
+                    visaList.innerHTML = '<p style="text-align: center; padding: 20px; color: #666;">No visa records found.</p>';
+                    return;
+                }
+                
+                visas.forEach(visa => {
+                    const visaItem = document.createElement('div');
+                    visaItem.className = 'visa-item';
+                    visaItem.innerHTML = `
+                        <div>
+                            <strong>${visa.visaNumber}</strong>: ${visa.surname} ${visa.firstName}
+                            (Passport: ${visa.passportNumber})
+                        </div>
+                        <button class="delete-btn" data-visa="${visa._id}">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    `;
+                    visaList.appendChild(visaItem);
+                    
+                    // Add event listener to delete button
+                    const deleteBtn = visaItem.querySelector('.delete-btn');
+                    deleteBtn.addEventListener('click', function() {
+                        const visaId = this.getAttribute('data-visa');
+                        deleteVisa(visaId);
+                    });
+                });
+            }
+            
+            // Delete visa function
+            async function deleteVisa(visaId) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/visas/${visaId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        showNotification('Visa deleted successfully!');
+                        // Refresh the list
+                        const visas = await getAllVisas();
+                        renderVisaList(visas);
+                    } else {
+                        throw new Error('Failed to delete visa');
+                    }
+                } catch (error) {
+                    showNotification(error.message, true);
+                }
+            }
+            
+            // Check if user is logged in
+            function checkLoginStatus() {
+                const savedToken = localStorage.getItem('authToken');
+                const savedUser = localStorage.getItem('currentUser');
+                
+                if (savedToken && savedUser) {
+                    authToken = savedToken;
+                    currentUser = JSON.parse(savedUser);
+                    
+                    if (currentUser.role === 'admin') {
+                        adminSection.style.display = 'block';
+                        loginForm.style.display = 'none';
+                        addNewBtn.style.display = 'block';
+                    }
+                } else {
+                    adminSection.style.display = 'none';
+                    loginForm.style.display = 'none';
+                    addNewBtn.style.display = 'none';
+                }
+            }
+            
+            // Logout function
+            function logout() {
+                authToken = null;
+                currentUser = null;
+                adminMode = false;
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                adminSection.style.display = 'none';
+                loginForm.style.display = 'none';
+                addNewBtn.style.display = 'none';
+                showNotification('Logged out successfully');
+            }
+            
+            // Enable admin mode with secret key combination
+            function enableAdminMode() {
+                adminMode = true;
+                loginForm.style.display = 'block';
+                showNotification('Admin mode activated. Please login.');
+            }
+            
+            // Event listeners
+            checkBtn.addEventListener('click', async function() {
+                const visaNumber = visaNumberInput.value.trim();
+                
+                if (visaNumber === '') {
+                    showNotification('Please enter a visa number', true);
+                    return;
+                }
+                
+                const visaData = await checkVisa(visaNumber);
+                if (visaData) {
+                    // Show the visa data
+                    resultVisaNumber.textContent = visaData.visaNumber || visaNumber;
+                    resultSurname.textContent = visaData.surname;
+                    resultFirstname.textContent = visaData.firstName || visaData.firstname;
+                    resultDob.textContent = visaData.dateOfBirth || visaData.dob;
+                    resultPassport.textContent = visaData.passportNumber || visaData.passport;
+                    resultValidity.textContent = visaData.visaValidity || visaData.validity;
+                    resultStatus.textContent = visaData.visaStatus || visaData.status;
+                    
+                    // Set status class
+                    resultStatus.className = 'status ';
+                    const status = visaData.visaStatus || visaData.status;
+                    if (status === 'Viza emisa') {
+                        resultStatus.classList.add('status-issued');
+                    } else if (status === 'Processing') {
+                        resultStatus.classList.add('status-pending');
+                    } else if (status === 'Rejected') {
+                        resultStatus.classList.add('status-rejected');
+                    }
+                    
+                    // Show result page
+                    showPage('result-page');
+                }
+            });
+            
+            // Other event listeners
+            anotherSearchBtn.addEventListener('click', function() {
+                visaNumberInput.value = '';
+                showPage('main-page');
+            });
+            
+            addNewBtn.addEventListener('click', function() {
+                showPage('add-visa-page');
+            });
+            
+            addVisaBtn.addEventListener('click', function() {
+                showPage('add-visa-page');
+            });
+            
+            viewAllBtn.addEventListener('click', async function() {
+                if (currentUser && currentUser.role === 'admin') {
+                    const visas = await getAllVisas();
+                    renderVisaList(visas);
+                    showPage('all-visas-page');
+                } else {
+                    showNotification('Please login as admin first', true);
+                }
+            });
+            
+            backToMainBtn.addEventListener('click', function() {
+                showPage('main-page');
+            });
+            
+            backFromListBtn.addEventListener('click', function() {
+                showPage('main-page');
+            });
+            
+            loginBtn.addEventListener('click', async function() {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                if (username === '' || password === '') {
+                    showNotification('Please enter username and password', true);
+                    return;
+                }
+                
+                const success = await login(username, password);
+                if (success && currentUser.role === 'admin') {
+                    adminSection.style.display = 'block';
+                    loginForm.style.display = 'none';
+                    addNewBtn.style.display = 'block';
+                }
+            });
+            
+            logoutBtn.addEventListener('click', function() {
+                logout();
+            });
+            
+            saveNewBtn.addEventListener('click', async function() {
+                const visaNumber = newVisaNumber.value.trim();
+                
+                if (visaNumber === '') {
+                    showAdminNotification('Please enter a visa number', true);
+                    return;
+                }
+                
+                const visaData = {
+                    visaNumber: newVisaNumber.value,
+                    surname: newSurname.value,
+                    firstName: newFirstname.value,
+                    dateOfBirth: newDob.value,
+                    passportNumber: newPassport.value,
+                    visaValidity: newValidity.value,
+                    visaStatus: newStatus.value
+                };
+                
+                const result = await addVisa(visaData);
+                if (result) {
+                    // Clear form
+                    newVisaNumber.value = '';
+                    newSurname.value = '';
+                    newFirstname.value = '';
+                    newDob.value = '';
+                    newPassport.value = '';
+                    newValidity.value = '';
+                    newStatus.value = 'Viza emisa';
+                    
+                    // Go back to main page after a delay
+                    setTimeout(() => {
+                        showPage('main-page');
+                    }, 1500);
+                }
+            });
+            
+            // Allow pressing Enter to submit
+            visaNumberInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkBtn.click();
+                }
+            });
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            
+            // Hidden admin trigger click
+            hiddenAdminTrigger.addEventListener('click', function() {
+                enableAdminMode();
+            });
+            
+            // Secret key combination to enable admin mode (Ctrl+Shift+A)
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                    enableAdminMode();
+                    e.preventDefault();
+                }
+            });
+            
+            // Pre-fill a sample visa for demo
+            newVisaNumber.value = 'V9936482';
+            newSurname.value = 'ISLAM';
+            newFirstname.value = 'RAKIBUL';
+            newDob.value = '19/05/1992';
+            newPassport.value = 'P9876543';
+            newValidity.value = '31/12/2025';
+            
+            // Check login status on load
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+var ciDateFormatServer="MM/dd/yy",ciDateFormatDisplay="dd.MM.yyyy",performOnReady=function(){},performOnContent=function(){},postInitPage=function(){};$(document).ready(function(){var t,n;for(performOnReady(),performOnContent(),postInitPage(),t=$("#horizontal-menu li"),n=1;n<=t.length;n++)$(t[n-1]).addClass("menu-color"+(n%5+1))})
