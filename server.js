@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB connection string সেটআপ
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system';
+// MongoDB connection string
+const mongoUri = 'mongodb+srv://mdtuhinhelal0_db_user:84LW4mUTY6rD0CVU@cluster0.zhazzet.mongodb.net/visa-system?retryWrites=true&w=majority';
 
 // সেশন মিডলওয়্যার যোগ করুন
 app.use(session({
@@ -22,7 +22,11 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: mongoUri
+        mongoUrl: mongoUri,
+        mongoOptions: {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+        }
     }),
     cookie: { 
         secure: false,
@@ -78,14 +82,18 @@ app.post('/api/verify-captcha', (req, res) => {
 
 // হেলথ চেক এন্ডপয়েন্ট
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Server is running' });
+    res.json({ 
+        status: 'OK', 
+        message: 'Server is running',
+        database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+    });
 });
 
 // রাউটস - API রাউটগুলো আগে ডিফাইন করতে হবে
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/visas', require('./routes/visas'));
 
-// স্ট্যাটিক ফাইল সার্ভ করা - এই লাইনটি সবচেয়ে গুরুত্বপূর্ণ
+// স্ট্যাটিক ফাইল সার্ভ করা
 app.use(express.static(path.join(__dirname)));
 
 // মূল হোমপেজ রাউট
@@ -100,25 +108,54 @@ app.get('/check-my-visa', (req, res) => {
 
 // API রাউট ছাড়া অন্য সকল রাউটের জন্য check-my-visa ফোল্ডারের index.html সার্ভ করুন
 app.get('*', (req, res) => {
-    // যদি রিকোয়েস্ট API এর জন্য হয় তাহলে 404 রিটার্ন করুন
     if (req.path.startsWith('/api/')) {
         return res.status(404).json({ error: 'API endpoint not found' });
     }
     
-    // অন্যথায় check-my-visa ফোল্ডারের index.html সার্ভ করুন
     res.sendFile(path.join(__dirname, 'check-my-visa', 'index.html'));
 });
 
-// MongoDB connection
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connected successfully'))
-.catch(err => {
-  console.log('MongoDB connection error:', err);
-  console.log('Using connection string:', mongoUri.replace(/:[^:]*@/, ':****@')); // পাসওয়ার্ড লুকানোর জন্য
+// MongoDB connection with better error handling
+const connectWithRetry = function() {
+  console.log('Attempting MongoDB connection...');
+  
+  mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    connectTimeoutMS: 10000,
+  })
+    .then(() => {
+      console.log('MongoDB connected successfully');
+      console.log('Connection string:', mongoUri.replace(/:[^:]*@/, ':****@'));
+    })
+    .catch(err => {
+      console.log('MongoDB connection error:', err.message);
+      console.log('Using connection string:', mongoUri.replace(/:[^:]*@/, ':****@'));
+      
+      // Retry after 5 seconds
+      console.log('Retrying connection in 5 seconds...');
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+// Start connection
+connectWithRetry();
+
+// Handle application termination
+process.on('SIGINT', async () => {
+  try {
+    await mongoose.connection.close();
+    console.log('MongoDB connection closed through app termination');
+    process.exit(0);
+  } catch (err) {
+    console.error('Error closing MongoDB connection:', err);
+    process.exit(1);
+  }
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
