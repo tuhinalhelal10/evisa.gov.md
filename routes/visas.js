@@ -18,8 +18,8 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// ভিসা নম্বর দিয়ে খুঁজুন
-router.get('/:visaNumber', async (req, res) => {
+// ভিসা নম্বর দিয়ে খুঁজুন - এই রাউটটি পরিবর্তন করুন
+router.get('/search/:visaNumber', async (req, res) => {
   try {
     const visa = await Visa.findOne({ visaNumber: req.params.visaNumber });
     if (!visa) {
@@ -31,7 +31,7 @@ router.get('/:visaNumber', async (req, res) => {
   }
 });
 
-// নতুন ভিসা যোগ করুন (শুধু এডমিনের জন্য)
+// নতুন ভিসা যোগ করুন (শুধু এডমিনের জন্য) - এই রাউটে কিছু পরিবর্তন করুন
 router.post('/', auth, async (req, res) => {
   try {
     if (req.user.role !== 'admin') {
@@ -60,8 +60,8 @@ router.post('/', auth, async (req, res) => {
       firstName,
       dateOfBirth,
       passportNumber,
-      visaValidity,
-      visaStatus,
+      visaValidity: visaValidity || '26/07/2021', // ডিফল্ট ভ্যালু যোগ করুন
+      visaStatus: visaStatus || 'Viza emisa', // ডিফল্ট ভ্যালু যোগ করুন
       createdBy: req.user.id
     });
 

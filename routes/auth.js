@@ -14,7 +14,7 @@ router.post('/setup', async (req, res) => {
 
     const adminUser = new User({
       username: 'admin',
-      password: 'Tuhin@332832',
+      password: 'admin123',
       role: 'admin'
     });
 
@@ -25,14 +25,24 @@ router.post('/setup', async (req, res) => {
   }
 });
 
-// লগইন
+// লগইন (ক্যাপচা ভ্যালিডেশন ছাড়া)
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+
     // ইউজার খুঁজুন
     const user = await User.findOne({ username });
-    if (!user || !(await user.correctPassword(password, user.password))) {
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // পাসওয়ার্ড চেক করুন
+    const isPasswordValid = await user.correctPassword(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
