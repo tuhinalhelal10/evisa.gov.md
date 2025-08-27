@@ -13,13 +13,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// MongoDB connection string সেটআপ
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system';
+
 // সেশন মিডলওয়্যার যোগ করুন
 app.use(session({
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system'
+        mongoUrl: mongoUri
     }),
     cookie: { 
         secure: false,
@@ -107,12 +110,15 @@ app.get('*', (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system', {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.log('MongoDB connection error:', err));
+.catch(err => {
+  console.log('MongoDB connection error:', err);
+  console.log('Using connection string:', mongoUri.replace(/:[^:]*@/, ':****@')); // পাসওয়ার্ড লুকানোর জন্য
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
