@@ -13,38 +13,22 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// সেশন মিডলওয়্যার যোগ করুন (MongoDB connection fail হলে error handle করুন)
-try {
-  app.use(session({
-      secret: process.env.SESSION_SECRET || 'your-secret-key',
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-          mongoUrl: MONGODB_URI,
-          // MongoDB connection fail হলে session store fail হতে দেবেন না
-          mongoOptions: {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          }
-      }),
-      cookie: { 
-          secure: false,
-          maxAge: 15 * 60 * 1000
-      }
-  }));
-} catch (error) {
-  console.log('Session store initialization error:', error);
-  // Fallback: memory-based session store ব্যবহার করুন
-  app.use(session({
+// MongoDB connection string সেটআপ
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system';
+
+// সেশন মিডলওয়্যার যোগ করুন
+app.use(session({
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: mongoUri
+    }),
     cookie: { 
         secure: false,
         maxAge: 15 * 60 * 1000
     }
-  }));
-}
+}));
 
 // ক্যাপচা জেনারেটর ফাংশন
 const svgCaptcha = require('svg-captcha');
@@ -126,15 +110,14 @@ app.get('*', (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system', {
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected successfully'))
 .catch(err => {
   console.log('MongoDB connection error:', err);
-  // Fallback: যদি MongoDB connection fail হয়, তাহলে至少 app টি চলতে থাকবে
-  console.log('App will continue without database connection');
+  console.log('Using connection string:', mongoUri.replace(/:[^:]*@/, ':****@')); // পাসওয়ার্ড লুকানোর জন্য
 });
 
 const PORT = process.env.PORT || 5000;
