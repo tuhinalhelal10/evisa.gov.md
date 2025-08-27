@@ -13,19 +13,38 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// সেশন মিডলওয়্যার যোগ করুন
-app.use(session({
+// সেশন মিডলওয়্যার যোগ করুন (MongoDB connection fail হলে error handle করুন)
+try {
+  app.use(session({
+      secret: process.env.SESSION_SECRET || 'your-secret-key',
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+          mongoUrl: MONGODB_URI,
+          // MongoDB connection fail হলে session store fail হতে দেবেন না
+          mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          }
+      }),
+      cookie: { 
+          secure: false,
+          maxAge: 15 * 60 * 1000
+      }
+  }));
+} catch (error) {
+  console.log('Session store initialization error:', error);
+  // Fallback: memory-based session store ব্যবহার করুন
+  app.use(session({
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-system'
-    }),
     cookie: { 
         secure: false,
         maxAge: 15 * 60 * 1000
     }
-}));
+  }));
+}
 
 // ক্যাপচা জেনারেটর ফাংশন
 const svgCaptcha = require('svg-captcha');
@@ -112,7 +131,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/visa-syst
   useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.log('MongoDB connection error:', err));
+.catch(err => {
+  console.log('MongoDB connection error:', err);
+  // Fallback: যদি MongoDB connection fail হয়, তাহলে至少 app টি চলতে থাকবে
+  console.log('App will continue without database connection');
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
