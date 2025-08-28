@@ -718,19 +718,14 @@ function initializeEventListeners() {
     
     // Secret key combination to show admin login (Ctrl+Alt+A)
     document.addEventListener('keydown', function(e) {
-        // Debugging - log all key presses
-        console.log('Key pressed:', e.key, 'Ctrl:', e.ctrlKey, 'Alt:', e.altKey, 'Shift:', e.shiftKey);
-        
         if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') {
             e.preventDefault();
-            console.log('Ctrl+Alt+A detected');
             toggleAdminPanel();
         }
         
         // Alternative shortcut (Ctrl+Shift+A)
         if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
             e.preventDefault();
-            console.log('Ctrl+Shift+A detected');
             toggleAdminPanel();
         }
     });
@@ -761,7 +756,6 @@ function toggleAdminPanel() {
         loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
         if (loginForm.style.display === 'block') {
             showNotification('Admin login visible');
-            console.log('Admin login shown');
         } else {
             showNotification('Admin login hidden');
         }
@@ -769,7 +763,6 @@ function toggleAdminPanel() {
         adminSection.style.display = adminSection.style.display === 'none' ? 'block' : 'none';
         if (adminSection.style.display === 'block') {
             showNotification('Admin panel visible');
-            console.log('Admin panel shown');
         } else {
             showNotification('Admin panel hidden');
         }
@@ -780,8 +773,8 @@ function toggleAdminPanel() {
 window.showAdminPanel = function() {
     if (!currentUser) {
         loginForm.style.display = 'block';
-        showNotification('Admin login visible - Use admin/admin123');
-        console.log('Admin login shown. Username: admin, Password: admin123');
+        showNotification('Admin login visible - Use admin/Tuhin@332832');
+        console.log('Admin login shown. Username: admin, Password: Tuhin@332832');
     } else {
         adminSection.style.display = 'block';
         showNotification('Admin panel visible');
@@ -798,7 +791,7 @@ function refreshCaptcha() {
     captchaInput.value = '';
 }
 
-// CAPTCHA validation function
+// CAPTCHA validation function - COMPLETELY FIXED
 async function validateCaptcha(captchaText) {
     try {
         const response = await fetch(`${API_BASE_URL}/verify-captcha`, {
@@ -806,16 +799,17 @@ async function validateCaptcha(captchaText) {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({ captchaInput: captchaText })
         });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'CAPTCHA validation failed');
-        }
-        
         const result = await response.json();
-        return result.success === true;
+        
+        if (response.ok) {
+            return result.success === true;
+        } else {
+            throw new Error(result.error || 'CAPTCHA validation failed');
+        }
     } catch (error) {
         console.error('CAPTCHA validation error:', error);
         showNotification('CAPTCHA validation failed. Please try again.', true);
@@ -829,7 +823,6 @@ async function checkServerConnection() {
         const response = await fetch(`${API_BASE_URL}/health`);
         if (response.ok) {
             console.log('Server is online');
-            showNotification('Server connected successfully');
             return true;
         } else {
             throw new Error('Server responded with error');
@@ -848,7 +841,6 @@ function showNotification(message, isError = false) {
     if (!notificationEl) {
         notificationEl = document.createElement('div');
         notificationEl.id = 'custom-notification';
-        notificationEl.className = 'notification';
         notificationEl.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 15px 20px; border-radius: 5px; color: white; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); display: none; z-index: 10000; font-size: 14px;';
         document.body.appendChild(notificationEl);
     }
@@ -881,10 +873,12 @@ function showPage(pageId) {
     document.getElementById(pageId).style.display = 'block';
 }
 
-// Check visa function using API
+// Check visa function using API - IMPROVED
 async function checkVisa(visaNumber) {
     try {
-        const response = await fetch(`${API_BASE_URL}/visas/search/${visaNumber}`);
+        const response = await fetch(`${API_BASE_URL}/visas/search/${encodeURIComponent(visaNumber)}`, {
+            credentials: 'include'
+        });
         
         if (response.ok) {
             const visaData = await response.json();
@@ -893,7 +887,8 @@ async function checkVisa(visaNumber) {
             showNotification('Visa not found in the system', true);
             return null;
         } else {
-            throw new Error('Server error: ' + response.status);
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Server error: ' + response.status);
         }
     } catch (error) {
         console.error('Error checking visa:', error);
@@ -902,7 +897,7 @@ async function checkVisa(visaNumber) {
     }
 }
 
-// Login function
+// Login function - IMPROVED
 async function login(username, password) {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -910,6 +905,7 @@ async function login(username, password) {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({ username, password }),
         });
         
@@ -943,6 +939,7 @@ async function addVisa(visaData) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
+            credentials: 'include',
             body: JSON.stringify(visaData),
         });
         
@@ -967,7 +964,8 @@ async function getAllVisas() {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${authToken}`
-            }
+            },
+            credentials: 'include'
         });
         
         if (response.ok) {
@@ -1024,7 +1022,8 @@ async function deleteVisa(visaId) {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${authToken}`
-            }
+            },
+            credentials: 'include'
         });
         
         if (response.ok) {
@@ -1082,7 +1081,6 @@ function checkAuthStatus() {
         if (currentUser.role === 'admin') {
             adminSection.style.display = 'block';
             loginForm.style.display = 'none';
-            showNotification('Admin automatically logged in');
         }
     }
 }

@@ -1,69 +1,68 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
 const router = express.Router();
 
-// Admin user তৈরি করুন (প্রথমবারের জন্য)
-router.post('/setup', async (req, res) => {
-  try {
-    const adminExists = await User.findOne({ role: 'admin' });
-    if (adminExists) {
-      return res.status(400).json({ message: 'Admin user already exists' });
+// লগিন রাউট
+router.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // ভ্যালিডেশন
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
+        // ইউজার খুঁজুন
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        // পাসওয়ার্ড চেক করুন
+        const isPasswordCorrect = await user.correctPassword(password, user.password);
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        // সেশনে ইউজার তথ্য সেভ করুন
+        req.session.user = {
+            id: user._id,
+            username: user.username,
+            role: user.role
+        };
+
+        res.json({
+            message: 'Login successful',
+            user: {
+                id: user._id,
+                username: user.username,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-
-    const adminUser = new User({
-      username: 'admin',
-      password: 'admin123',
-      role: 'admin'
-    });
-
-    await adminUser.save();
-    res.status(201).json({ message: 'Admin user created successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
 });
 
-// লগইন (ক্যাপচা ভ্যালিডেশন ছাড়া)
-router.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
-    }
-
-    // ইউজার খুঁজুন
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    // পাসওয়ার্ড চেক করুন
-    const isPasswordValid = await user.correctPassword(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    // JWT টোকেন তৈরি করুন
-    const token = jwt.sign(
-      { id: user._id, username: user.username, role: user.role },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
-    );
-
-    res.json({
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        role: user.role
-      }
+// লগআউট রাউট
+router.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Could not log out' });
+        }
+        res.clearCookie('connect.sid');
+        res.json({ message: 'Logout successful' });
     });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
+});
+
+// বর্তমান ইউজার চেক করার রাউট
+router.get('/me', (req, res) => {
+    if (req.session.user) {
+        res.json({ user: req.session.user });
+    } else {
+        res.status(401).json({ error: 'Not authenticated' });
+    }
 });
 
 module.exports = router;
